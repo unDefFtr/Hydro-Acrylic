@@ -5,7 +5,8 @@ const a = document.createElement('style');
 const htmlElement = document.documentElement;
 if(htmlElement.dataset.page != 'user_login') {
 	a.innerHTML = `
-.main {
+/* Monaco suggestion items also use .main, so only target Hydro's page container. */
+#panel > .main {
 	background-image: url("");
 	background-repeat: no-repeat;
 	background-size: cover;
