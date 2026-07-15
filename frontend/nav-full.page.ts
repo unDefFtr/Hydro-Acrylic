@@ -1,70 +1,117 @@
-// 请不要在此处粘贴来历不明的代码。
-// 否则可能导致用户界面异常或是账户信息泄露。
 // Use at your own risk.
 const a = document.createElement('style');
 const htmlElement = document.documentElement;
-if(htmlElement.dataset.page != 'user_login') {
-	a.innerHTML = `
-/* Monaco suggestion items also use .main, so only target Hydro's page container. */
+
+const wallpaper = 'url("原始壁纸地址")';
+const blurredWallpaper = 'url("模糊壁纸地址")';
+
+a.innerHTML = `
+:root {
+    --hydro-wallpaper: ${wallpaper};
+    --hydro-wallpaper-blur: ${blurredWallpaper};
+
+    --glass-color: rgba(255, 255, 255, 0.68);
+    --glass-border: rgba(255, 255, 255, 0.35);
+}
+
+/*
+ * Page background
+ */
+${htmlElement.dataset.page !== 'user_login' ? `
 #panel > .main {
-	background-image: url("");
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
-	background-attachment: fixed;
+    background-image: var(--hydro-wallpaper);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
 }
-body .slideout-panel .main .row .section{
-	background-color: rgba(255,255,255,0.8);
+` : ''}
+
+/*
+ * Main glass sections
+ *
+ * The blurred wallpaper uses exactly the same background geometry
+ * as the original wallpaper, so it visually aligns with the page.
+ */
+body .slideout-panel .main .row .section {
+    background:
+        linear-gradient(
+            var(--glass-color),
+            var(--glass-color)
+        ),
+        var(--hydro-wallpaper-blur);
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+
+    border: 1px solid var(--glass-border);
+
+    /*
+     * No expensive realtime backdrop blur.
+     * saturation can be baked into the blurred image instead.
+     */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
 }
-body .slideout-panel .main .row .section{
-	backdrop-filter: saturate(200%) blur(30px);
+
+/*
+ * Navigation
+ */
+.nav {
+    background:
+        linear-gradient(
+            rgba(255, 255, 255, 0.78),
+            rgba(255, 255, 255, 0.78)
+        ),
+        var(--hydro-wallpaper-blur);
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
 }
-.nav{
-	background-color: rgba(255,255,255,0.8);
-	backdrop-filter: blur(30px);
+
+/*
+ * Table header
+ */
+thead {
+    background:
+        linear-gradient(
+            rgba(255, 255, 255, 0.78),
+            rgba(255, 255, 255, 0.78)
+        ),
+        var(--hydro-wallpaper-blur);
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
 }
-.data-table tr:nth-child(2n){
-	background: none;
+
+/*
+ * Remove alternating table backgrounds and borders
+ */
+.data-table tr:nth-child(2n),
+.data-table tr {
+    background: none;
 }
-.data-table tr{
-	border: none;
-	background: none;
+
+.data-table tr {
+    border: none;
 }
-.page--problem_main .col--ac-tried, .page--problem_category .col--ac-tried{
-	border: none;
-}
-thead{
-	background-color: rgba(255,255,255,0.8);
-	backdrop-filter: blur(30px);
+
+.page--problem_main .col--ac-tried,
+.page--problem_category .col--ac-tried {
+    border: none;
 }
 `;
-}
-else {
-	a.innerHTML = `
-body .slideout-panel .main .row .section{
-        background-color: rgba(255,255,255,0.8);
-}
-body .slideout-panel .main .row .section{
-        backdrop-filter: saturate(200%) blur(30px);
-}
-.nav{
-        background-color: rgba(255,255,255,0.8);
-        backdrop-filter: blur(30px);
-}
-.data-table tr:nth-child(2n){
-        background: none;
-}
-.data-table tr{
-        border: none;
-        background: none;
-}
-.page--problem_main .col--ac-tried, .page--problem_category .col--ac-tried{
-        border: none;
-}
-thead{
-        background-color: rgba(255,255,255,0.8);
-        backdrop-filter: blur(30px);
-}
-`;
-}
+
 document.head.append(a);
